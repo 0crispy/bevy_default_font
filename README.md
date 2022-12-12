@@ -4,8 +4,10 @@
 # 🌷🌷 Bevy x Default Fonts 🌸🌸
 *Default font support for the Bevy game engine*
 
-![An animated image showing the text debug example from the Bevy source code, modified to use the Bevy Default plugin for default font support.](./assets/text-showcase.gif)
+<img height=400 src="./assets/text-showcase.gif" alt="An animated image showing the text debug example from the Bevy source code, modified to use the Bevy Default plugin for default font support."/>
 
+*Caption: An animated image showing the text debug example from the Bevy source code, modified to use the Bevy Default plugin for default font support.*
+    
 Have you used `Default::default()` on `TextStyle`s? Have you created `Text`es inside of `From` and `Into` trait implementations? Have you crazed yourself when seeing https://github.com/bevyengine/bevy/issues/1017?
 
 Have you be dissapointed that there isn't a way to easily assign the default font in Bevy? 
