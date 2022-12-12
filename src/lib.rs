@@ -25,15 +25,17 @@ impl<A: FnMut(&Res<Assets<Font>>, &Res<AssetServer>) -> Handle<Font> + 'static +
     }
 
     fn default_fonts(
-        mut styles: Query<&mut Text>,
+        mut styles: Query<(&mut Text, Entity)>,
         assets: Res<Assets<Font>>,
         font: Res<DefaultFont<A>>,
         server: Res<AssetServer>,
     ) {
-        for mut text in styles.iter_mut() {
+        let mut font = font.font.lock().unwrap();
+
+        for (mut text, _) in styles.iter_mut() {
             for mut section in &mut text.sections {
                 if assets.get(&section.style.font).is_none() {
-                    section.style.font = (font.font.lock().unwrap())(&assets, &server);
+                    section.style.font = font(&assets, &server);
                 };
             }
         }
