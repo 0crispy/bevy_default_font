@@ -11,11 +11,11 @@ use bevy_default_font::{DefaultFontPlugin, Mode};
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            window: WindowDescriptor {
+        .add_plugins(DefaultPlugins.set(WindowPlugin{
+            primary_window:Some(Window{
                 present_mode: PresentMode::AutoNoVsync,
                 ..default()
-            },
+            }),
             ..default()
         }))
         .add_plugin(FrameTimeDiagnosticsPlugin)
@@ -61,7 +61,7 @@ fn infotext_system(mut commands: Commands) {
                 color: Color::rgb(0.8, 0.2, 0.7),
             },
         )
-        .with_text_alignment(TextAlignment::CENTER)
+        .with_text_alignment(TextAlignment::Center)
         .with_style(Style {
             position_type: PositionType::Absolute,
             position: UiRect {
