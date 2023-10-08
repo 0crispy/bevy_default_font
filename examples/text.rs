@@ -3,7 +3,7 @@
 /// https://bevyengine.org/examples/ui/text-debug/
 ///
 use bevy::{
-    diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
+    diagnostic::{FrameTimeDiagnosticsPlugin, DiagnosticsStore},
     prelude::*,
     window::PresentMode,
 };
@@ -18,10 +18,10 @@ fn main() {
             }),
             ..default()
         }))
-        .add_plugin(FrameTimeDiagnosticsPlugin)
-        .add_startup_system(infotext_system)
-        .add_system(change_text_system)
-        .add_plugin(DefaultFontPlugin::new(
+        .add_plugins(FrameTimeDiagnosticsPlugin)
+        .add_systems(Startup,infotext_system)
+        .add_systems(Update,change_text_system)
+        .add_plugins(DefaultFontPlugin::new(
             |_, server| server.load("NotoSans-Regular.ttf"),
             Mode::Setup,
         ))
@@ -45,11 +45,8 @@ fn infotext_system(mut commands: Commands) {
         )
         .with_style(Style {
             position_type: PositionType::Absolute,
-            position: UiRect {
-                top: Val::Px(5.0),
-                left: Val::Px(15.0),
-                ..default()
-            },
+            top: Val::Px(5.0),
+            left: Val::Px(15.0),
             ..default()
         }),
     );
@@ -64,15 +61,9 @@ fn infotext_system(mut commands: Commands) {
         .with_text_alignment(TextAlignment::Center)
         .with_style(Style {
             position_type: PositionType::Absolute,
-            position: UiRect {
-                top: Val::Px(5.0),
-                right: Val::Px(15.0),
-                ..default()
-            },
-            max_size: Size {
-                width: Val::Px(400.),
-                height: Val::Undefined,
-            },
+            top: Val::Px(5.0),
+            right: Val::Px(15.0),
+            max_width: Val::Px(400.),
             ..default()
         })
     );
@@ -123,11 +114,8 @@ fn infotext_system(mut commands: Commands) {
         ])
         .with_style(Style {
             position_type: PositionType::Absolute,
-            position: UiRect {
-                bottom: Val::Px(5.0),
-                right: Val::Px(15.0),
-                ..default()
-            },
+            bottom: Val::Px(5.0),
+            right: Val::Px(15.0),
             ..default()
         }),
         TextChanges,
@@ -144,15 +132,10 @@ fn infotext_system(mut commands: Commands) {
         .with_style(Style {
             align_self: AlignSelf::FlexEnd,
             position_type: PositionType::Absolute,
-            position: UiRect {
-                bottom: Val::Px(5.0),
-                left: Val::Px(15.0),
-                ..default()
-            },
-            size: Size {
-                width: Val::Px(200.0),
-                ..default()
-            },
+
+            bottom: Val::Px(5.0),
+            left: Val::Px(15.0),
+            width: Val::Px(200.0),
             ..default()
         }),
     );
@@ -160,7 +143,7 @@ fn infotext_system(mut commands: Commands) {
 
 fn change_text_system(
     time: Res<Time>,
-    diagnostics: Res<Diagnostics>,
+    diagnostics: Res<DiagnosticsStore>,
     mut query: Query<&mut Text, With<TextChanges>>,
 ) {
     for mut text in &mut query {

@@ -1,5 +1,5 @@
 use std::cell::RefCell;
-use std::sync::{Mutex, MutexGuard};
+use std::sync::Mutex;
 
 use bevy::app::Plugin;
 use bevy::prelude::*;
@@ -33,7 +33,7 @@ impl<A: FnMut(&Res<Assets<Font>>, &Res<AssetServer>) -> Handle<Font> + 'static +
         let mut font = font.font.lock().unwrap();
 
         for (mut text, _) in styles.iter_mut() {
-            for mut section in &mut text.sections {
+            for section in &mut text.sections {
                 if assets.get(&section.style.font).is_none() {
                     section.style.font = font(&assets, &server);
                 };
@@ -53,8 +53,8 @@ impl<A: FnMut(&Res<Assets<Font>>, &Res<AssetServer>) -> Handle<Font> + 'static +
             font
         });
         match &self.mode {
-            Mode::System => app.add_system(Self::default_fonts),
-            Mode::Setup => app.add_system(Self::default_fonts),
+            Mode::System => app.add_systems(Update,Self::default_fonts),
+            Mode::Setup => app.add_systems(Update,Self::default_fonts),
         };
     }
 }
